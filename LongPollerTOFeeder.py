@@ -2,11 +2,11 @@
 import os
 import time
 
-class Poller(ob):
+class Poller(object):
 	"""docstring for ClassName"""
 	def __init__(self):
 		super(Poller, self).__init__()
-		self.timer = 10
+		self.timer = 2
 		
 
 
@@ -27,9 +27,13 @@ class Poller(ob):
   			added = [f for f in after if not f in before]
   			removed = [f for f in before if not f in after]
   			if added:
-  					for f in added :
-  						print f + "HAS BEEN ADDED"	
-            	before = after  
+  					for f in added :  						
+  						print f + "HAS BEEN ADDED" 						
+  						
+
+  	            	before = list(after)
+            	
+            	
   				
 
   								
