@@ -39,9 +39,13 @@ class Poller(object):
   								
     			
 def main():
-	obj1 = Poller()
- 	obj1.LongPoll('/home/kekre/Downloads')
- 	print "DONE!"
+	print("THIS IS A CLASS , BY DESIGN THIS IS NOT TO BE DIRECTLY EXECUTED!")
+	print("PLEASE IMPLEMENT THIS CLASS IN A SEPERATE MODULE! CHEERS!")
+	print("\nTo test this class , please uncomment the following code and set a valid path ! ")
+	
+#	obj1 = Poller()
+#	obj1.LongPoll('path')
+# 	print "DONE!"
  
  
 if __name__ == '__main__':
