@@ -1,9 +1,11 @@
+		
 from LongPollerTOFeeder import Poller 
 
+
 def main():
-	polling_obj=Poller()
-	polling_obj.timer=5
-	polling_obj.LongPoll('/home/kekre/Downloads')
+	Server_polling_obj=Poller("Server_Polling_obj")
+	Server_polling_obj.timer=5
+	Server_polling_obj.LongPoll('/home/kekre/Downloads')
 	pass
 
 

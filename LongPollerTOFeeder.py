@@ -2,43 +2,67 @@
 import os
 import time
 import simpleflock
+import datetime
+
 class Poller(object):
 	"""docstring for ClassName"""
-	def __init__(self):
-		super(Poller, self).__init__()
-		self.timer = 2
-		#default timer
+	def __init__(self,name):
+
+		super(Poller, self).__init__()      #boilerplate 
+		self.pkl=''							#Default location of pickle module 									 
+		self.timer = 2						#Default file poller interval 
+		self.tout=10						#Default timeout for simple lock 
+		self.w=12
+
 		
+		
+		################################LOGGING###############################
+		print"##################### LOGGING Poller Class #####################"
+		print "CLASS object initialization DONE ,Following Defaults have set  "
+		print "Name of  calling Object :" + name
+		print "Poller timer :" + str(self.timer) + " "+str(type (self.timer))
+		print "Simple_Lock Timeout :" + str(self.tout) + " "+str(type (self.tout))
+		print "Location of Pickle file " + str(self.pkl) + " "+str(type(self.pkl))
+		
+		print"#################################################################"
+		#######################################################################
+		pass
 
 
 	def LongPoll(self,path):
-		#path_to_watch = 'C:\\logs\\admin-PC\\deepesh\\Test_vaultize\\1.01\\1.01'
-		#path_to_watch=str(path)
 		
-		before = [(f) for f in os.listdir (path)]
+		before = [(files) for files in os.listdir (path)]
+		###############################LOGGING##############################
+		print "\n"
+		print "########################LOGGING LongPoll Function ###################"
 		print "watching path = " + path
-		#print before 
 		print "Sleep timer set to :" + str(self.timer)
-		 	
+		print "#############################################################"
+		################################################################### 	
 		while 1:			
 			time.sleep(self.timer) 	
 			added =[]
 			removed=[]		
-  			after = [(f) for f in os.listdir (path)]
-  			added = [f for f in after if not f in before]
-  			removed = [f for f in before if not f in after]
+  			after = [(files) for files in os.listdir (path)]
+  			added = [files for files in after if not files in before]
+  			removed = [files for files in before if not files in after]
   			if added:
-  					for f in added :  						
-  						print f + "HAS BEEN ADDED"
-  						
-  						with simpleflock.SimpleFlock(file_path,timeout=10):
-  							file_obj=open(file_path,w)
-  							#do+something
-  							pass					
+  					for newfile in added :  						
+  							
+  						AddToPickle(f)
+  						print newfile + "HAS BEEN ADDED"		
+  							#play with pickle file 
+
+  						pass					
   						
 
   	            	before = list(after)
   	            	pass
+  	        pass
+
+  	def AddToPickle():
+  		
+  	    pass       
 
             	
             	
@@ -51,12 +75,14 @@ def main():
 	print("PLEASE IMPLEMENT THIS CLASS IN A SEPERATE MODULE! CHEERS!")
 	print("\nTo test this class , please uncomment the following code and set a valid path ! ")
 	
-#	obj1 = Poller()
-#	obj1.LongPoll('path')
-# 	print "DONE!"
+#	print "obj1 = Poller()""
+#	print "obj1.LongPoll('path')""
+# 	print "print "DONE!"
 	pass
+	
  
  
 if __name__ == '__main__':
  	main()
  	pass
+ 	
