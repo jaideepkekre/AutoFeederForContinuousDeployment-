@@ -1,8 +1,11 @@
 #!/usr/bin/python
+//Owner :Jaideep Kekre
 import os
 import time
 import simpleflock
 import datetime
+import pickle 
+
 
 class Poller(object):
 	"""docstring for ClassName"""
@@ -60,7 +63,13 @@ class Poller(object):
   	            	pass
   	        pass
 
-  	def AddToPickle():
+  	def AddToPickle(FilePathToBeAdded):
+  		with simpleflock.SimpleFlock(pkl):
+   			pkl_file = open(self.pkl, 'rb')
+			mydict = pickle.load(pkl_file)
+			print (mydict))
+
+   			pass
   		
   	    pass       
 
@@ -86,3 +95,4 @@ if __name__ == '__main__':
  	main()
  	pass
  	
+#Jaideep Kekre 
