@@ -32,6 +32,7 @@ class Poller(object):
 		pass
 
 	def AddToPickle(self,FilePathToBeAdded):
+  		print self.name 
   		with simpleflock.SimpleFlock(pkl):
    			pkl_file = open(pkl, 'rb')
 			mydict = pickle.load(pkl_file)

@@ -9,8 +9,8 @@ PickleLocation   = '/home/kekre/Downloads/pkl.p'
 NameOfObject     = 'SERVER POLLER'
 #####################################################
 def PollerCreator():
-	
-	polling_obj=Poller("SERVER POLLING",PickleLocation)
+	print "Initializing PollerCreator() & Creating Poller Object "
+	polling_obj=Poller(NameOfObject,PickleLocation)
 	polling_obj.timer=5
 	###########################LOGGING################################
 	print "\nLOGGING implementsLongpoller.py PollerCreator()"
