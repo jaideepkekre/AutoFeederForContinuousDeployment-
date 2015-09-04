@@ -1,5 +1,5 @@
 #!/usr/bin/python
-//Owner :Jaideep Kekre
+#Owner :Jaideep Kekre
 import os
 import time
 import simpleflock
@@ -9,10 +9,10 @@ import pickle
 
 class Poller(object):
 	"""docstring for ClassName"""
-	def __init__(self,name):
+	def __init__(self,name,pkl):
 
 		super(Poller, self).__init__()      #boilerplate 
-		self.pkl=''							#Default location of pickle module 									 
+		#self.pkl=''							#Default location of pickle module 									 
 		self.timer = 2						#Default file poller interval 
 		self.tout=10						#Default timeout for simple lock 
 		self.w=12
@@ -20,24 +20,32 @@ class Poller(object):
 		
 		
 		################################LOGGING###############################
-		print"##################### LOGGING Poller Class #####################"
+		print"\n##################### LOGGING Poller Class #####################"
 		print "CLASS object initialization DONE ,Following Defaults have set  "
 		print "Name of  calling Object :" + name
 		print "Poller timer :" + str(self.timer) + " "+str(type (self.timer))
 		print "Simple_Lock Timeout :" + str(self.tout) + " "+str(type (self.tout))
-		print "Location of Pickle file " + str(self.pkl) + " "+str(type(self.pkl))
+		print "Location of Pickle file " + str(pkl) + " "+str(type(pkl))
 		
-		print"#################################################################"
+		print"#################################################################\n"
 		#######################################################################
 		pass
 
-
+	def AddToPickle(self,FilePathToBeAdded):
+  		with simpleflock.SimpleFlock(pkl):
+   			pkl_file = open(pkl, 'rb')
+			mydict = pickle.load(pkl_file)
+			print (mydict)
+			
+			pass
+   		pass	
+   		
 	def LongPoll(self,path):
 		
 		before = [(files) for files in os.listdir (path)]
 		###############################LOGGING##############################
 		print "\n"
-		print "########################LOGGING LongPoll Function ###################"
+		print "########################LOGGING LongPoll Function ###############"
 		print "watching path = " + path
 		print "Sleep timer set to :" + str(self.timer)
 		print "#############################################################"
@@ -51,8 +59,8 @@ class Poller(object):
   			removed = [files for files in before if not files in after]
   			if added:
   					for newfile in added :  						
-  							
-  						AddToPickle(f)
+  						print newfile	
+  						self.AddToPickle(newfile)
   						print newfile + "HAS BEEN ADDED"		
   							#play with pickle file 
 
@@ -63,15 +71,8 @@ class Poller(object):
   	            	pass
   	        pass
 
-  	def AddToPickle(FilePathToBeAdded):
-  		with simpleflock.SimpleFlock(pkl):
-   			pkl_file = open(self.pkl, 'rb')
-			mydict = pickle.load(pkl_file)
-			print (mydict))
-
-   			pass
-  		
-  	    pass       
+  	
+       
 
             	
             	
