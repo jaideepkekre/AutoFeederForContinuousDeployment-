@@ -9,35 +9,41 @@ import pickle
 
 class Poller(object):
 	"""docstring for ClassName"""
-	def __init__(self,name,pkl):
+	def __init__(self,fromCallingObj_name,fromCallingObj_pickleLoc):
 
-		super(Poller, self).__init__()      #boilerplate 
-		#self.pkl=''							#Default location of pickle module 									 
-		self.timer = 2						#Default file poller interval 
-		self.tout=10						#Default timeout for simple lock 
-		self.w=12
+		super(Poller, self).__init__()               #boilerplate 
+		#self.pkl=''							     #Default location of pickle module 									 
+		self.timer = 2						         #Default file poller interval 
+		self.tout=10						         #Default timeout for simple lock 
+		
+		self.PickleLocation=fromCallingObj_pickleLoc #Convert argument (LOCATION OF PICKLE FILE ) to instance variable 
+		self.NameOFCurrentObj=fromCallingObj_name    #Convert argumet (NAME OF CALLING OBJECT) to instance variable 
 
 		
 		
 		################################LOGGING###############################
 		print"\n##################### LOGGING Poller Class #####################"
 		print "CLASS object initialization DONE ,Following Defaults have set  "
-		print "Name of  calling Object :" + name
+		print "Name of  calling Object :" + self.NameOFCurrentObj
 		print "Poller timer :" + str(self.timer) + " "+str(type (self.timer))
 		print "Simple_Lock Timeout :" + str(self.tout) + " "+str(type (self.tout))
-		print "Location of Pickle file " + str(pkl) + " "+str(type(pkl))
+		print "Location of Pickle file " + str(self.PickleLocation) + " "+str(type(self.PickleLocation))
 		
 		print"#################################################################\n"
 		#######################################################################
 		pass
 
+
 	def AddToPickle(self,FilePathToBeAdded):
-  		print self.name 
-  		with simpleflock.SimpleFlock(pkl):
-   			pkl_file = open(pkl, 'rb')
-			mydict = pickle.load(pkl_file)
+  		print"Contents of self :"+str(dir(self))
+
+  		with simpleflock.SimpleFlock(self.PickleLocation):
+   			pkl_file = open(self.PickleLocation, 'rb')
+			mydict = pickle.load(pkl_file)			
+			mydict[FilePathToBeAdded] = "Not Processed"
+			print "Contents of Dict are : "
 			print (mydict)
-			
+			sleep(1)                                #Sleep for 1 sec to cater for disk write issues 
 			pass
    		pass	
    		
@@ -50,7 +56,9 @@ class Poller(object):
 		print "watching path = " + path
 		print "Sleep timer set to :" + str(self.timer)
 		print "#############################################################"
-		################################################################### 	
+		################################################################### 
+
+
 		while 1:			
 			time.sleep(self.timer) 	
 			added =[]
