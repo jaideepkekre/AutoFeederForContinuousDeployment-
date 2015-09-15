@@ -1,20 +1,63 @@
 #!/usr/bin/python
 #Owner :Jaideep Kekre 
+#_info_   = This Module performs basic checks on the pickle file  the poller 
+
 import pickle
+import sys
+import time 
+import fcntl
 
 
 def initPickle(PicklePath):
-	print "Verifying :" + str(PicklePath)
-	PickleFile = open(PicklePath, 'a')
-	PickleFile = open(PicklePath, 'r')
+
+    
+    #Creates file if file does not exist 
+
+	try :
+		PickleFile = open(PicklePath, 'rb')
+		fcntl.flock(PickleFile, fcntl.LOCK_EX )
+		print "Locked from initPickle"
+		dicta = dict() 
+
+	except OSError :
+		print " FATAL ERROR Could not open file  "
+		PickleFile.close()
+		sys.exit(0)
+		#exits the prog as file could not be opened 
+
 	
+	
+
+
 	try :
 		dicta= pickle.load(PickleFile)
+		
 
 	except EOFError : 
-		print "File Empty !! "
+		dicta['NULL'] = "NULL Placeholder from init pickle" 
+		print "Pickle file was  Empty, Corrected in initPickle!! "
+		PickleFile = open(PicklePath, 'wb')
+		pickle.dump(dicta, PickleFile)
+		print dicta 
+
+		time.sleep(1)
+		
+
+	fcntl.flock(PickleFile, fcntl.LOCK_UN)
+	print "Unlocked from initPickle "
+	PickleFile.close()
+
 	
+	
+
+    #Write to pickle 
+
+
+
+
 	pass
+
+
 
 def main():
 	initPickle('/home/kekre/Downloads/pkl.p')

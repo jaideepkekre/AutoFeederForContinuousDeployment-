@@ -1,21 +1,24 @@
 #!/usr/bin/python
 #Owner :Jaideep Kekre
+#_author_ = Jaideep Kekre
+#_info_   = This module contains the logic for the Poller 
+
 import os
 import time
-import simpleflock
 import datetime
 import pickle 
+import fcntl
+
 
 
 class Poller(object):
-	"""docstring for ClassName"""
+	""" Provides logic for Poller  """
 	def __init__(self,fromCallingObj_name,fromCallingObj_pickleLoc):
 
 		super(Poller, self).__init__()               #boilerplate 
 		#self.pkl=''							     #Default location of pickle module 									 
 		self.timer = 2						         #Default file poller interval 
 		self.tout=10						         #Default timeout for simple lock 
-		
 		self.PickleLocation=fromCallingObj_pickleLoc #Convert argument (LOCATION OF PICKLE FILE ) to instance variable 
 		self.NameOFCurrentObj=fromCallingObj_name    #Convert argumet (NAME OF CALLING OBJECT) to instance variable 
 
@@ -34,19 +37,65 @@ class Poller(object):
 		pass
 
 
-	def AddToPickle(self,FilePathToBeAdded):
-  		print"Contents of self :"+str(dir(self))
 
-  		with simpleflock.SimpleFlock(self.PickleLocation):
-   			pkl_file = open(self.PickleLocation, 'rb')
-			mydict = pickle.load(pkl_file)			
-			mydict[FilePathToBeAdded] = "Not Processed"
+
+	def AddToPickle(self,FilePathToBeAdded):
+
+  		print"Contents of self :"+str(dir(self))
+  		dicta = dict()
+  		temp = dict ()
+  		
+  		#with simpleflock.SimpleFlock(self.PickleLocation):
+  		with open(self.PickleLocation,'rb') as PickleRead: 
+  			fcntl.flock(PickleRead, fcntl.LOCK_EX )
+  			print "Locked from AddToPickle read"
+   				
+
+			try : 
+				dicta= pickle.load(PickleRead)
+				print "Contents of Dict before adding are "
+				print dicta 
+
+				
+
+			except EOFError : 
+				dicta['NULL'] = "NULL Placeholder from AddToPickle" 
+				print "Pickle file was  Empty , Corrected  in AddToPickle!! "
+				pass
+
+			fcntl.flock(PickleRead, fcntl.LOCK_UN)
+			print "Unlocked from AddToPickle read"
+
+
+			pass
+
+
+		with open(self.PickleLocation,'wb') as PickleWrite :
+			fcntl.flock(PickleWrite, fcntl.LOCK_EX )
+  			print "Locked from AddToPickle write"
+			temp[FilePathToBeAdded] = "Not Processed"
 			print "Contents of Dict are : "
-			print (mydict)
-			sleep(1)                                #Sleep for 1 sec to cater for disk write issues 
+			dicta.update(temp)
+			print dicta 
+			pickle.dump(dicta,PickleWrite)
+			time.sleep(1)
+			fcntl.flock(PickleWrite, fcntl.LOCK_UN)
+			print "Unlocked from AddToPickle write "
+
+			#Sleep for 2 sec to cater for disk write issues 
+
+
+
+	       
+
+
+			
 			pass
    		pass	
    		
+
+
+
 	def LongPoll(self,path):
 		
 		before = [(files) for files in os.listdir (path)]
@@ -70,12 +119,11 @@ class Poller(object):
   					for newfile in added :  						
   						print newfile	
   						self.AddToPickle(newfile)
-  						print newfile + "HAS BEEN ADDED"		
+  						print newfile + " HAS BEEN ADDED"		
   							#play with pickle file 
 
   						pass					
   						
-
   	            	before = list(after)
   	            	pass
   	        pass
