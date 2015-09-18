@@ -2,10 +2,10 @@ import shutil
 import subprocess
 import fcntl
 
-NASControlFilePath = '/mnt/Server/QA/Automation_Data/AutoFiringData/CurrentServer.txt'
-CopyDestination='/home/web/vaultize/'
+NASControlFilePath = ''
+CopyDestination=''
 #CopyDestination='/home/kekre/Scratch/'
-LookHere = '/mnt/Server/Vaultize_build/Server/Release_15.1.maint/'
+LookHere = ''
 #LookHere = '/home/kekre/Scratch/test/'
 print "variables set"
 
