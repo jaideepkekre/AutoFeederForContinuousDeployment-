@@ -1,4 +1,7 @@
 *.pyc 
+
 *.md~
+
 *.gitignore~
+
 *.*~
