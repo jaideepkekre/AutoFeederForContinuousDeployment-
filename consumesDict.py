@@ -31,7 +31,7 @@ class DictConsumer(object):
 				print "consuming" + str (mydict)
 
 				fcntl.flock(pkl_file, fcntl.LOCK_UN)
-				print "Unlocked from Consumer"	
+				print "Unlocked from Consumer\n"	
 			pass
 
 		pass

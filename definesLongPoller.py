@@ -41,7 +41,7 @@ class Poller(object):
 
 	def AddToPickle(self,FilePathToBeAdded):
 
-  		print"Contents of self :"+str(dir(self))
+  		#print"Contents of self :"+str(dir(self))
   		dicta = dict()
   		temp = dict ()
   		
@@ -64,7 +64,7 @@ class Poller(object):
 				pass
 
 			fcntl.flock(PickleRead, fcntl.LOCK_UN)
-			print "Unlocked from AddToPickle read"
+			print "Unlocked from AddToPickle read\n"
 
 
 			pass
@@ -80,7 +80,7 @@ class Poller(object):
 			pickle.dump(dicta,PickleWrite)
 			time.sleep(1)
 			fcntl.flock(PickleWrite, fcntl.LOCK_UN)
-			print "Unlocked from AddToPickle write "
+			print "Unlocked from AddToPickle write \n"
 
 			#Sleep for 2 sec to cater for disk write issues 
 

@@ -14,7 +14,7 @@ def initPickle(PicklePath):
     #Creates file if file does not exist 
 
 	try :
-		PickleFile = open(PicklePath, 'rb')
+		PickleFile = open(PicklePath, 'rb+')
 		fcntl.flock(PickleFile, fcntl.LOCK_EX )
 		print "Locked from initPickle"
 		dicta = dict() 
@@ -36,7 +36,6 @@ def initPickle(PicklePath):
 	except EOFError : 
 		dicta['NULL'] = "NULL Placeholder from init pickle" 
 		print "Pickle file was  Empty, Corrected in initPickle!! "
-		PickleFile = open(PicklePath, 'wb')
 		pickle.dump(dicta, PickleFile)
 		print dicta 
 
