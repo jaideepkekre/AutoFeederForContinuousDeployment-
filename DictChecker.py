@@ -17,11 +17,11 @@ def initPickle(PicklePath):
 		PickleFile = open(PicklePath, 'rb+')
 		fcntl.flock(PickleFile, fcntl.LOCK_EX )
 		print "Locked from initPickle"
-		dicta = dict() 
+		dicta = list()
 
-	except OSError :
-		print " FATAL ERROR Could not open file  "
-		PickleFile.close()
+	except IOError , OSError :
+		print " FATAL ERROR Could not open file AW!  \n Please Create a file as  " + PicklePath
+		#PickleFile.close()
 		sys.exit(0)
 		#exits the prog as file could not be opened 
 
@@ -34,7 +34,7 @@ def initPickle(PicklePath):
 		
 
 	except EOFError : 
-		dicta['NULL'] = "NULL Placeholder from init pickle" 
+		dicta.append("NULL") 
 		print "Pickle file was  Empty, Corrected in initPickle!! "
 		pickle.dump(dicta, PickleFile)
 		print dicta 

@@ -42,8 +42,8 @@ class Poller(object):
 	def AddToPickle(self,FilePathToBeAdded):
 
   		#print"Contents of self :"+str(dir(self))
-  		dicta = dict()
-  		temp = dict ()
+  		dicta = list()
+  		#temp = list()
   		
   		#with simpleflock.SimpleFlock(self.PickleLocation):
   		with open(self.PickleLocation,'rb') as PickleRead: 
@@ -59,7 +59,7 @@ class Poller(object):
 				
 
 			except EOFError : 
-				dicta['NULL'] = "NULL Placeholder from AddToPickle" 
+				dicta.append(NULL) 
 				print "Pickle file was  Empty , Corrected  in AddToPickle!! "
 				pass
 
@@ -73,9 +73,9 @@ class Poller(object):
 		with open(self.PickleLocation,'wb') as PickleWrite :
 			fcntl.flock(PickleWrite, fcntl.LOCK_EX )
   			print "Locked from AddToPickle write"
-			temp[FilePathToBeAdded] = "Not Processed"
+			#temp[FilePathToBeAdded] = "Not Processed"
 			print "Contents of Dict are : "
-			dicta.update(temp)
+			dicta.append(FilePathToBeAdded)
 			print dicta 
 			pickle.dump(dicta,PickleWrite)
 			time.sleep(1)

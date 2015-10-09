@@ -21,15 +21,26 @@ class DictConsumer(object):
 			time.sleep(self.SleepTime)
 			with open(self.PickleLocation,'rb+') as pkl_file : 
 				
-								
+				mydict=list()				
 				mydict = pickle.load(pkl_file)
 
 				fcntl.flock(pkl_file, fcntl.LOCK_EX )
   				print "Locked from  consumer"
-
-				time.sleep(1)
+  				time.sleep(1)
 				print "consuming" + str (mydict)
+				if mydict[-1]=="NULL":
+					print "List is empty! May the Force Be with You !"
 
+				else :
+					LastElement = mydict.pop()
+					print("Last Added :" + LastElement)
+					print ("New List is:" + str(mydict) )
+					#Buildbot calling goes here
+					pickle.dump(mydict, pkl_file)
+
+				
+
+				#
 				fcntl.flock(pkl_file, fcntl.LOCK_UN)
 				print "Unlocked from Consumer\n"	
 			pass
