@@ -42,28 +42,31 @@ class Poller(object):
 	def AddToPickle(self,FilePathToBeAdded):
 
   		#print"Contents of self :"+str(dir(self))
-  		dicta = list()
+  		Lista = list()
   		#temp = list()
   		
   		#with simpleflock.SimpleFlock(self.PickleLocation):
-  		with open(self.PickleLocation,'rb') as PickleRead: 
+  		with open(self.PickleLocation,'r+b') as PickleRead: 
   			fcntl.flock(PickleRead, fcntl.LOCK_EX )
   			print "Locked from AddToPickle read"
    				
 
 			try : 
-				dicta= pickle.load(PickleRead)
+				Lista= pickle.load(PickleRead)
 				print "Contents of Dict before adding are "
-				print dicta 
+				print Lista 
 
 				
 
 			except EOFError : 
-				dicta.append(NULL) 
+				Lista.append(NULL) 
+				pickle.dump(Lista,PickleRead)
 				print "Pickle file was  Empty , Corrected  in AddToPickle!! "
+				
 				pass
 
 			fcntl.flock(PickleRead, fcntl.LOCK_UN)
+			PickleRead.close()
 			print "Unlocked from AddToPickle read\n"
 
 
@@ -75,11 +78,13 @@ class Poller(object):
   			print "Locked from AddToPickle write"
 			#temp[FilePathToBeAdded] = "Not Processed"
 			print "Contents of Dict are : "
-			dicta.append(FilePathToBeAdded)
-			print dicta 
-			pickle.dump(dicta,PickleWrite)
+			Lista.append(FilePathToBeAdded)
+			print Lista 
+			pickle.dump(Lista,PickleWrite)
 			time.sleep(1)
+						
 			fcntl.flock(PickleWrite, fcntl.LOCK_UN)
+			PickleWrite.close()
 			print "Unlocked from AddToPickle write \n"
 
 			#Sleep for 2 sec to cater for disk write issues 

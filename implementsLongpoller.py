@@ -10,8 +10,8 @@ lock = 0
 #####################################################
 #To customize this poller add oe edit varaibles in this section only 
 # main() must remain untouched for better reusability 
-PollThisLocation = '/home/kekre/Downloads'
-PickleLocation   = '/home/kekre/Downloads/pkl.p'
+PollThisLocation = '/home/admin/Downloads'
+PickleLocation   = '/home/admin/Downloads/pkl.p'
 NameOfObject     = 'SERVER POLLER'
 #####################################################
 
